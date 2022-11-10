@@ -14,6 +14,7 @@ Metadata:
         - 4898c902-f047-495b-ae80-3cbeb5ffe4c1
         - 95e50971-d3f4-4f01-b128-28b7dd01c8e0
         - 25791523-df86-4db2-a47a-faab9b60fd0b
+        - 0ab315bf-380f-48da-aa88-c66b5bf18cde
     913e5226-4c25-47b9-afc9-a8fec25df1cd:
       size:
         width: 140
@@ -50,6 +51,23 @@ Metadata:
         'y': 250
       z: 1
       parent: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
+    07e80487-0f96-4d0a-8d77-e2b1ecaf1bc1:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 525
+        'y': -7
+      z: 0
+    0ab315bf-380f-48da-aa88-c66b5bf18cde:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 538
+        'y': 178
+      z: 1
+      parent: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
 Resources:
   EC2VPCIU9U:
     Type: 'AWS::EC2::VPC'
@@ -81,3 +99,15 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 25791523-df86-4db2-a47a-faab9b60fd0b
+  EC2IG1VLB0:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 07e80487-0f96-4d0a-8d77-e2b1ecaf1bc1
+  EC2R4LIBC:
+    Type: 'AWS::EC2::Route'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0ab315bf-380f-48da-aa88-c66b5bf18cde
