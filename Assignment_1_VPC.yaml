@@ -25,29 +25,34 @@ Resources:
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      # AvailabitiyZone: !Select [ 0, !GetAZs '' ]      
-      VpcId: !Ref VPCL00170144
+      VpcId: !Ref VPCL00170144  
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      MapPublicIpOnLaunch: true
       CidrBlock: !Ref PublicSubnet1CIDR
 
   PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      # AvailabitiyZone: !Select [ 1, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      MapPublicIpOnLaunch: true
       CidrBlock: !Ref PublicSubnet2CIDR
 
   PrivateSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      # AvailabitiyZone: !Select [ 0, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      MapPublicIpOnLaunch: true
       CidrBlock: !Ref PrivateSubnet1CIDR
+
 
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      # AvailabitiyZone: !Select [ 1, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      MapPublicIpOnLaunch: true
       CidrBlock: !Ref PrivateSubnet2CIDR
 
   VPCL00170144:
