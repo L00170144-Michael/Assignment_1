@@ -14,6 +14,7 @@ Metadata:
         - 25791523-df86-4db2-a47a-faab9b60fd0b
         - 95e50971-d3f4-4f01-b128-28b7dd01c8e0
         - 4898c902-f047-495b-ae80-3cbeb5ffe4c1
+        - 0ab315bf-380f-48da-aa88-c66b5bf18cde
     913e5226-4c25-47b9-afc9-a8fec25df1cd:
       size:
         width: 140
@@ -69,12 +70,13 @@ Metadata:
         width: 60
         height: 60
       position:
-        x: 370
-        'y': 220
-      z: 3
-      parent: f69f3ffe-927f-4396-8440-c08e796de008
+        x: 550
+        'y': 240
+      z: 1
+      parent: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
       embeds: []
       iscontainedinside:
+        - f69f3ffe-927f-4396-8440-c08e796de008
         - f69f3ffe-927f-4396-8440-c08e796de008
         - f69f3ffe-927f-4396-8440-c08e796de008
         - f69f3ffe-927f-4396-8440-c08e796de008
@@ -93,34 +95,55 @@ Metadata:
         'y': 210
       z: 2
       parent: 913e5226-4c25-47b9-afc9-a8fec25df1cd
-      embeds:
-        - 0ab315bf-380f-48da-aa88-c66b5bf18cde
+      embeds: []
 Resources:
-  EC2SQH2O:
+  PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
-    Properties: {}
+    Properties:
+      VpcId: !Ref VPCL00170144
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 4898c902-f047-495b-ae80-3cbeb5ffe4c1
-  EC2S4JETO:
+
+  PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
-    Properties: {}
+    Properties:
+      VpcId: !Ref VPCL00170144
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 913e5226-4c25-47b9-afc9-a8fec25df1cd
+
+  PrivateSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPCL00170144
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 95e50971-d3f4-4f01-b128-28b7dd01c8e0
-  EC2S2Z95W:
+
+  PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
-    Properties: {}
+    Properties:
+      VpcId: !Ref VPCL00170144
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 25791523-df86-4db2-a47a-faab9b60fd0b
+
+  VPCL00170144:
+    Type: 'AWS::EC2::VPC'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
+        
   InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
     Properties: {}
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 07e80487-0f96-4d0a-8d77-e2b1ecaf1bc1
-  EC2VPCG4PC0B:
+
+  VPCGatewayAttachment:
     Type: 'AWS::EC2::VPCGatewayAttachment'
     Properties:
       VpcId: !Ref VPCL00170144
@@ -128,18 +151,7 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 17093562-5357-419f-b125-c6bf811c5bd0
-  VPCL00170144:
-    Type: 'AWS::EC2::VPC'
-    Properties: {}
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
-  PubSubnet:
-    Type: 'AWS::EC2::Subnet'
-    Properties: {}
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 913e5226-4c25-47b9-afc9-a8fec25df1cd
+
   PublicRouter:
     Type: 'AWS::EC2::Route'
     Properties:
@@ -147,6 +159,7 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 0ab315bf-380f-48da-aa88-c66b5bf18cde
+
   RouterTable:
     Type: 'AWS::EC2::RouteTable'
     Properties: {}
