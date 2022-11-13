@@ -5,19 +5,19 @@ Parameters:
     Type: String
 
   PublicSubnet1CIDR:
-    Default: 10.0.1.0/22
+    Default: 10.0.0.0/24
     Type: String
 
   PublicSubnet2CIDR:
-    Default: 10.0.2.0/22
+    Default: 10.0.4.0/24
     Type: String
 
   PrivateSubnet1CIDR:
-    Default: 10.0.3.0/22
+    Default: 10.0.8.0/24
     Type: String
 
   PrivateSubnet2CIDR:
-    Default: 10.0.4.0/22
+    Default: 10.0.12.0/24
     Type: String
 
 Resources:
@@ -25,28 +25,28 @@ Resources:
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabitiyZone: !Select [ 0, !GetAZs '' ]      
+      # AvailabitiyZone: !Select [ 0, !GetAZs '' ]      
       VpcId: !Ref VPCL00170144
       CidrBlock: !Ref PublicSubnet1CIDR
 
   PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabitiyZone: !Select [ 1, !GetAZs '' ]
+      # AvailabitiyZone: !Select [ 1, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
       CidrBlock: !Ref PublicSubnet2CIDR
 
   PrivateSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabitiyZone: !Select [ 0, !GetAZs '' ]
+      # AvailabitiyZone: !Select [ 0, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
       CidrBlock: !Ref PrivateSubnet1CIDR
 
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabitiyZone: !Select [ 1, !GetAZs '' ]
+      # AvailabitiyZone: !Select [ 1, !GetAZs '' ]
       VpcId: !Ref VPCL00170144
       CidrBlock: !Ref PrivateSubnet2CIDR
 
