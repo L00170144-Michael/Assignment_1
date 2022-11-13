@@ -21,6 +21,30 @@ Parameters:
     Type: String
 
 Resources:
+#VPC
+  VPCL00170144:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/20
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: Assignment VPC
+
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Assignment IGW     
+
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPCL00170144
+      InternetGatewayId: !Ref InternetGateway
+
 #Subnets
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
@@ -46,7 +70,6 @@ Resources:
       MapPublicIpOnLaunch: true
       CidrBlock: !Ref PrivateSubnet1CIDR
 
-
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -54,29 +77,6 @@ Resources:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]      
       MapPublicIpOnLaunch: true
       CidrBlock: !Ref PrivateSubnet2CIDR
-
-  VPCL00170144:
-    Type: 'AWS::EC2::VPC'
-    Properties:
-      CidrBlock: 10.0.0.0/20
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: Assignment VPC
-
-  InternetGateway:
-    Type: 'AWS::EC2::InternetGateway'
-    Properties:
-      Tags:
-        - Key: Name
-          Value: Assignment IGW     
-
-  VPCGatewayAttachment:
-    Type: 'AWS::EC2::VPCGatewayAttachment'
-    Properties:
-      VpcId: !Ref VPCL00170144
-      InternetGatewayId: !Ref InternetGateway
 
 #Public route table
   PublicRouteTable:
