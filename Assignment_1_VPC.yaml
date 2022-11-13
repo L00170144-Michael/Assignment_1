@@ -100,7 +100,9 @@ Resources:
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref VPCL00170144
+      AvailabitiyZone: !Select [ 0, !GetAZs '']      
+      VPCId: !Ref VPCL00170144
+      CidrBlock: 10.0.0.0/22
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 4898c902-f047-495b-ae80-3cbeb5ffe4c1
@@ -108,7 +110,9 @@ Resources:
   PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref VPCL00170144
+      AvailabitiyZone: !Select [ 1, !GetAZs '']
+      VPCId: !Ref VPCL00170144
+      CidrBlock: 10.0.4.0/22
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 913e5226-4c25-47b9-afc9-a8fec25df1cd
@@ -116,7 +120,9 @@ Resources:
   PrivateSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref VPCL00170144
+      AvailabitiyZone: !Select [ 0, !GetAZs '']
+      VPCId: !Ref VPCL00170144
+      CidrBlock: 10.0.8.0/22
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 95e50971-d3f4-4f01-b128-28b7dd01c8e0
@@ -124,18 +130,21 @@ Resources:
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      VpcId: !Ref VPCL00170144
+      AvailabitiyZone: !Select [ 1, !GetAZs '']
+      VPCId: !Ref VPCL00170144
+      CidrBlock: 10.0.12.0/22
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 25791523-df86-4db2-a47a-faab9b60fd0b
 
   VPCL00170144:
     Type: 'AWS::EC2::VPC'
-    Properties: {}
+    Properties:
+    CidrBlock: 10.0.0.0/20
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 37fa8c8e-5911-49c5-8cd6-fb60cbee1218
-        
+
   InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
     Properties: {}
@@ -152,7 +161,7 @@ Resources:
       'AWS::CloudFormation::Designer':
         id: 17093562-5357-419f-b125-c6bf811c5bd0
 
-  PublicRouter:
+  PublicRoute:
     Type: 'AWS::EC2::Route'
     Properties:
       RouteTableId: !Ref RouterTable
@@ -162,7 +171,8 @@ Resources:
 
   RouterTable:
     Type: 'AWS::EC2::RouteTable'
-    Properties: {}
+    Properties:
+      VpcId: !Ref VPCL00170144
     Metadata:
       'AWS::CloudFormation::Designer':
         id: f69f3ffe-927f-4396-8440-c08e796de008
