@@ -161,6 +161,7 @@ Resources:
       'AWS::CloudFormation::Designer':
         id: 17093562-5357-419f-b125-c6bf811c5bd0
 
+
   PublicRoute:
     Type: 'AWS::EC2::Route'
     Properties:
@@ -169,10 +170,43 @@ Resources:
       'AWS::CloudFormation::Designer':
         id: 0ab315bf-380f-48da-aa88-c66b5bf18cde
 
-  RouterTable:
+  PublicRouteTable:
     Type: 'AWS::EC2::RouteTable'
     Properties:
       VpcId: !Ref VPCL00170144
     Metadata:
       'AWS::CloudFormation::Designer':
         id: f69f3ffe-927f-4396-8440-c08e796de008
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+
+  PrivateRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPCL00170144
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: f69f3ffe-927f-4396-8440-c08e796de008
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnet2
+
