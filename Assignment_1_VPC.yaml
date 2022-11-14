@@ -20,15 +20,15 @@ Parameters:
     Default: 10.0.12.0/24
     Type: String
 
-  InstanceType:
-    Description: Webserver EC2 instance type
-    Type: String
-    Defualt: t2.mirco
-    AllowedValues:
-      - t1.micro
-      - t2.nano
-      - t2.micro
-    ConstrainDescription: must be a valid EC2
+  # InstanceType:
+  #   Description: Webserver EC2 instance type
+  #   Type: String
+  #   Defualt: t2.mirco
+  #   AllowedValues:
+  #     - t1.micro
+  #     - t2.nano
+  #     - t2.micro
+  #   ConstrainDescription: must be a valid EC2
 
 
 
