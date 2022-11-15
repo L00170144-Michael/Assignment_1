@@ -30,7 +30,13 @@ Parameters:
   #     - t2.micro
   #   ConstrainDescription: must be a valid EC2
 
-
+  SSHLocation:
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/((\d{1,2}))'
+    ConstraintDescription: Must be a valid cidr range x.x.x.x/x
+    Default: 0.0.0.0/0
+    MaxLength: '18'
+    MinLength: '9'
+    Type: String
 
 Resources:
 #VPC
@@ -70,7 +76,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       VpcId: !Ref VPCL00170144
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]      
       MapPublicIpOnLaunch: true
       CidrBlock: !Ref PublicSubnet2CIDR
 
@@ -86,7 +92,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       VpcId: !Ref VPCL00170144
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]      
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]      
       MapPublicIpOnLaunch: true
       CidrBlock: !Ref PrivateSubnet2CIDR
 
@@ -126,12 +132,58 @@ Resources:
 #       RouteTableId: !Ref PrivateRouteTable
 #       SubnetId: !Ref PrivateSubnet2
 
-  AppInstance:
-    Type: AWS::EC2::Instance
-    Properties
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]  
-      ImageId: ami-09d3b3274b6c5d4aa
-      InstanceType: t2.mirco
+# 
+  # AppInstance:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     AvailabilityZone: !Select [ 0, !GetAZs '' ]   
+  #     ImageId: ami-09d3b3274b6c5d4aa
+  #     InstanceType: t2.mirco
+
+#Securitygroup
+
+  SSHSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: SSH Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SSHLocation
+      Tags:
+        - Key: Name
+          Value: SSH Security Group
+      VpcId: !Ref VPCL00170144
+
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Web Server Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !Ref SSHSecurityGroup
+      Tags:
+        - Key: Name
+          Value: WebServer Security Group
+      VpcId: !Ref VPCL00170144
+
+  DataBaseSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Open databse for access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref WebServerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: DataBase Security Group
+      VpcId: !Ref VPCL00170144
+        
 
 Outputs:
   VPC:
@@ -164,3 +216,14 @@ Outputs:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2
     Value: !Ref PrivateSubnet2
 
+  SSHSecurityGroup:
+    Description: SSH Security Group ID
+    Export: 
+      Name: !Sub ${AWS::StackName}-SSHSecurityGroup
+    Value: !Ref SSHSecurityGroup
+
+  DataBaseSecurityGroup:
+    Description: DataBase Security Group ID
+    Export: 
+      Name: !Sub ${AWS::StackName}-DataBaseSecurityGroup
+    Value: !Ref DataBaseSecurityGroup
