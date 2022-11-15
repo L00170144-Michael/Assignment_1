@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  ExportVpcStackName:
+    Type: String
+
+  DatabaseInstanceIdentifier:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must be between letter and contain alphanumeric char
+    Default: mysqldb
+    Description: instance identifier name
+    MaxLength: 60
+    MinLength: 1
+    Type: String
+
+  DatabaseName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must be between letter and contain alphanumeric char
+    Default: applicationdb
+    Description: MySql database name
+    MaxLength: 64
+    MinLength: 1
+    Type: String
+
+  DatabaseUser:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: Must be between letter and contain alphanumeric char
+    Default: dbadmin
+    Description: Username for MySQL database access
+    MaxLength: 16
+    MinLength: 1
+    NoEcho: true
+    Type: String
+
+  DatabasePassword:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: Must contain only  alphanumeric char
+    Default: Test1230
+    Description: Password for MySQL database access
+    MaxLength: 41
+    MinLength: 8
+    NoEcho: true
+    Type: String
+
+  DatabaseBackupRetentionPeriod:
+    ConstraintDescription: Database backup retention perion must be between 0 and 35 days
+    Default: 0
+    Description: The number of days for Db  retention retained
+    MaxValue: 35
+    MinValue: 0
+    Type: Number
+
+  DatabaseAllocatedStorage:
+    ConstraintDescription: Must be between 5 and 1024gb
+    Default: 20
+    Description: The size of the database 
+    MaxValue: 1024
+    MinValue: 5
+    Type: Number
+
+  DatabaseInstanceClass:
+    AllowedValues:
+      - db.t1.micro
+      - db.t2.micro
+      - db.m1.small
+      - db.m1.medium
+      - db.m1.large
+    ConstraintDescription: Must select a valid DB instance type
+    Default: db.t2.micro
+    Description: The database instance type
+    Type: String
+
+  MultiiAZDatabase:
+    AllowedValues:
+      - true
+      - false
+    ConstraintDescription: Must be either true or false 
+    Default:  false 
+    Description: Create a Multi_AZ
+    Type: String
+
+
+Resources: 
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for RDS database
+      SubnetIds:
+        - Fn::ImportValue: !Sub ${ExportVpcStackName}-PrivateSubnet1
+        - Fn::ImportValue: !Sub ${ExportVpcStackName}-PrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: databse subnets
+
+  DatabaseInstance:
+    Type: AWS::RDS::DBInstance 
+    Properties:
+      AllocatedStorage: !Ref DatabaseAllocatedStorage
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      BackupRetentionPeriod: !Ref DatabaseBackupRetentionPeriod
+      DBInstanceClass: !Ref DatabaseInstanceClass
+      DBInstanceIdentifier: !Ref DatabaseInstanceIdentifier
+      DBName: !Ref DatabaseName
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      Engine: MySQL
+      EngineVersion: 5.7.40
+      MasterUsername: !Ref DatabaseUser
+      MasterUserPassword: !Ref DatabasePassword
+      MultiAZ: !Ref MultiiAZDatabase
+      VPCSecurityGroups:
+        - Fn::ImportValue: !Sub ${ExportVpcStackName}-DataBaseSecurityGroup
